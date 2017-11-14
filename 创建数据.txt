@@ -6,21 +6,21 @@ PUT /gino_product
       "properties": {
         "productName": {
           "type": "string",
-          "analyzer": "fulltext_analyzer",
+          "analyzer": "ik_pinyin_analyzer",
           "copy_to": [
             "bigSearchField"
           ]
         },
         "brandName": {
           "type": "string",
-          "analyzer": "fulltext_analyzer",
+          "analyzer": "ik_pinyin_analyzer",
           "copy_to": [
             "bigSearchField"
           ],
           "fields": {
             "brandName_pinyin": {
               "type": "string",
-              "analyzer": "pinyin_analyzer",
+              "analyzer": "ik_pinyin_analyzer",
               "search_analyzer": "standard"
             },
             "brandName_keyword": {
@@ -30,30 +30,34 @@ PUT /gino_product
             }
           }
         },
+        "englishBranchName":{
+          "type": "string",
+          "analyzer": "ik_pinyin_analyzer"
+        },
         "sortName": {
           "type": "string",
-          "analyzer": "fulltext_analyzer",
+          "analyzer": "ik_pinyin_analyzer",
           "copy_to": [
             "bigSearchField"
           ],
           "fields": {
             "sortName_pinyin": {
               "type": "string",
-              "analyzer": "pinyin_analyzer",
-              "search_analyzer": "standard"
+              "analyzer": "ik_pinyin_analyzer",
+              "search_analyzer": "ik_pinyin_analyzer"
             }
           }
         },
         "productKeyword": {
           "type": "string",
-          "analyzer": "fulltext_analyzer",
+          "analyzer": "ik_pinyin_analyzer",
           "copy_to": [
             "bigSearchField"
           ]
         },
         "bigSearchField": {
           "type": "string",
-          "analyzer": "fulltext_analyzer"
+          "analyzer": "ik_pinyin_analyzer"
         }
       }
     }
@@ -63,28 +67,22 @@ PUT /gino_product
       "number_of_shards": 1,
       "number_of_replicas": 0
     },
-    "analysis": {
-      "tokenizer": {
-        "simple_pinyin": {
-          "type": "pinyin",
-          "first_letter": "none"
+     "analysis": {
+            "analyzer": {
+                "ik_pinyin_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "ik_smart",
+                    "filter": ["my_pinyin", "word_delimiter"]
+                }
+            },
+            "filter": {
+                "my_pinyin": {
+                    "type": "pinyin",
+                    "first_letter": "prefix",
+                    "padding_char": " "
+                }
+            }
         }
-      },
-      "analyzer": {
-        "fulltext_analyzer": {
-          "type": "ik",
-          "use_smart": true
-        },
-        "pinyin_analyzer": {
-          "type": "custom",
-          "tokenizer": "simple_pinyin",
-          "filter": [
-            "word_delimiter",
-            "lowercase"
-          ]
-        }
-      }
-    }
   }
 }
 
@@ -94,6 +92,7 @@ POST /gino_product/product/1
 {
   "productName": "耐克女生运动轻跑鞋",
   "brandName": "耐克",
+  "englishBranchName": "nike",
   "sortName": "鞋子",
   "productKeyword": "耐克，潮流，运动，轻跑鞋"
 }
@@ -102,6 +101,7 @@ POST /gino_product/product/2
 {
   "productName": "耐克女生休闲运动服",
   "brandName": "耐克",
+  "englishBranchName": "nike",
   "sortName": "上衣",
   "productKeyword": "耐克，休闲，运动"
 }
@@ -110,6 +110,7 @@ POST /gino_product/product/3
 {
   "productName": "阿迪达斯女生冬季运动板鞋",
   "brandName": "阿迪达斯",
+  "englishBranchName": "adidas",
   "sortName": "鞋子",
   "productKeyword": "阿迪达斯，冬季，运动，板鞋"
 }
@@ -118,6 +119,7 @@ POST /gino_product/product/4
 {
   "productName": "阿迪达斯女生冬季运动夹克外套",
   "brandName": "阿迪达斯",
+  "englishBranchName": "adidas",
   "sortName": "上衣",
   "productKeyword": "阿迪达斯，冬季，运动，夹克，外套"
 }
