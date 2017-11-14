@@ -1,7 +1,7 @@
 # 电商商品搜索
 0. 效果展示
-![Image text](https://github.com/sven5566/search/blob/master/img/adi_upper.png.png)
-![Image text](https://github.com/sven5566/search/blob/master/img/nike.png)
+>![Image text](https://github.com/sven5566/search/blob/master/img/nike.png)
+>![Image text](https://github.com/sven5566/search/blob/master/img/adi_upper.png)
 
 1. 结构说明：
 >采用SpringBoot+Elasticsearch实现
